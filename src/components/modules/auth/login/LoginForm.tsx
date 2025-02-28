@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { loginUser, reCaptchaTokenVerification} from "@/services/AuthService";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
+import {  useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
   const form = useForm({
@@ -33,12 +34,17 @@ export default function LoginForm() {
 
   const [reCaptchaStatus, setReCaptchaStatus]= useState(false)
 
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath")
+  const router = useRouter()
+
 const handleReCaptcha = async(value:string | null)=>{
     
     try{
         const res = await reCaptchaTokenVerification(value!)
         if(res?.success){
             setReCaptchaStatus(true)
+
         }
     }
     catch(err:any){
@@ -53,6 +59,12 @@ const onSubmit:SubmitHandler<FieldValues> = async (data) =>{
         if(res?.success){
 
             toast.success(res?.message)
+            if(redirect){
+              router.push(redirect)
+            }
+            else{
+             router.push("/profile") 
+            }
         }
         else{
             toast.success(res?.message)
@@ -106,7 +118,7 @@ const onSubmit:SubmitHandler<FieldValues> = async (data) =>{
           />
    
           <div className="flex mt-3">
-          <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY} onChange = {handleReCaptcha} className="mx-auto"/>
+          <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY!} onChange = {handleReCaptcha} className="mx-auto"/>
           </div>
 
           <Button

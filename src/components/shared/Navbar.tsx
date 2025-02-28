@@ -16,15 +16,23 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { logout } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/constant";
 
 
 export default function Navbar() {
 
   const {user,setIsLoading} = useUser()
 
+  const pathname = usePathname()
+  const router = useRouter()
+
 const handleLogOut = () =>{
   logout()
   setIsLoading(true)
+  if(protectedRoutes.some(route => pathname.match(route))){
+    router.push('/') //protected route e thakle logout hyle home e pathai dibo
+  }
 }
   return (
     <header className="border-b w-full">

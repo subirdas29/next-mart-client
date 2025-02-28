@@ -19,3 +19,4 @@ export const createShop = async(data:FormData)=>{
     return Error(error)
    }
 }
+
