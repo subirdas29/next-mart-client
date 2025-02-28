@@ -3,7 +3,7 @@ import { getAllCategories } from "@/services/Category"
 
 
 const ProductCategoryPage = async() => {
-    const {data,meta} = await getAllCategories()
+    const {data} = await getAllCategories()
     console.log(data)
   return (
     <div>
