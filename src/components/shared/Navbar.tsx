@@ -1,9 +1,8 @@
-"use client"
-
+"use client";
+import Logo from "@/assets/svgs/Logo";
 import { Button } from "../ui/button";
 import { Heart, LogOut, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,37 +10,35 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { logout } from "@/services/AuthService";
 import { useUser } from "@/context/UserContext";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constant";
-import Logo from "@/assets/svgs/Logo";
 
 
 export default function Navbar() {
+  const { user, setIsLoading } = useUser();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const {user,setIsLoading} = useUser()
+  const handleLogOut = () => {
+    logout();
+    setIsLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+  };
 
-  const pathname = usePathname()
-  const router = useRouter()
-
-const handleLogOut = () =>{
-  logout()
-  setIsLoading(true)
-  if(protectedRoutes.some(route => pathname.match(route))){
-    router.push('/') //protected route e thakle logout hyle home e pathai dibo
-  }
-}
   return (
-    <header className="border-b w-full">
-      <div className="container flex justify-between items-center mx-auto h-16 px-3">
-        <h1 className="text-2xl font-black flex items-center">
-          <Logo />
-          Next Mart
-        </h1>
+    <header className="border-b bg-background w-full sticky top-0 z-10">
+      <div className="container flex justify-between items-center mx-auto h-16 px-5">
+        <Link href="/">
+          <h1 className="text-2xl font-black flex items-center">
+            <Logo /> Next Mart
+          </h1>
+        </Link>
         <div className="max-w-md  flex-grow">
           <input
             type="text"
@@ -56,44 +53,46 @@ const handleLogOut = () =>{
           <Button variant="outline" className="rounded-full p-0 size-10">
             <ShoppingBag />
           </Button>
-        {
-          user ? (
+
+          {user?.email ? (
             <>
-            <Link href="/create-shop">
-            <Button>Create Shop</Button>
-            </Link>
-   
-            <DropdownMenu>
-     <DropdownMenuTrigger>
-     <Avatar>
-     <AvatarImage src="https://github.com/shadcn.png" />
-     <AvatarFallback>User</AvatarFallback>
-   </Avatar>
-   
-     </DropdownMenuTrigger>
-     <DropdownMenuContent>
-       <DropdownMenuLabel>My Account</DropdownMenuLabel>
-       <DropdownMenuSeparator />
-       <DropdownMenuItem>Profile</DropdownMenuItem>
-       <DropdownMenuItem>Dashboard</DropdownMenuItem>
-       <DropdownMenuItem>My Shop</DropdownMenuItem>
-       <DropdownMenuSeparator />
-       <DropdownMenuItem className="bg-green-500 cursor-pointer" onClick={handleLogOut} >
-         <LogOut/>
-         <span>Log Out</span>
-       </DropdownMenuItem>
-       
-     </DropdownMenuContent>
-   </DropdownMenu>
+              <Link href="/create-shop">
+                <Button className="rounded-full">Create Shop</Button>
+              </Link>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>User</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>My Shop</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="bg-red-500 cursor-pointer"
+                    onClick={handleLogOut}
+                  >
+                    <LogOut />
+                    <span>Log Out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
-          ) :
-         ( <Link href="/login">
-          <Button className="rounded-lg border-green-500" variant = "outline">Login</Button>
-          </Link>)
-         
-        }
-
-
+          ) : (
+            <Link href="/login">
+              <Button className="rounded-full" variant="outline">
+                Login
+              </Button>
+            </Link>
+          )}
         </nav>
       </div>
     </header>

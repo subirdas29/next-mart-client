@@ -36,7 +36,9 @@ import { getAllBrands } from "@/services/Brand";
 import { addProduct } from "@/services/Product";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import Logo from "@/app/assets/svgs/Logo";
+import Logo from "@/assets/svgs/Logo";
+
+
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -436,10 +438,11 @@ export default function AddProductsForm() {
               </div>
             ))}
           </div>
-
+          
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
             {isSubmitting ? "Adding Product....." : "Add Product"}
           </Button>
+          
         </form>
       </Form>
     </div>

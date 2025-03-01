@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import Logo from "@/app/assets/svgs/Logo";
+
 
 import { useState } from "react";
 
@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import { createShop } from "@/services/Shop";
+import Logo from "@/assets/svgs/Logo";
 
 export default function CreateShopForm() {
   const [imageFiles, setImageFiles] = useState<[] | File[]>([]);
