@@ -15,7 +15,7 @@ const AllProductsPage = async() => {
         <ProductBanner title="All Product" path="Home - Products"/>
         <h2 className="text-xl font-bold my-5">Featured Collection</h2>
         <div className="grid grid-cols-6 gap-4 lg:gap-8 my-5">
-        {categories.slice(0,6).map((category: ICategory, idx: number) => (
+        {categories?.slice(0,6)?.map((category: ICategory, idx: number) => (
             <CategoryCard key={idx} category={category} />
           ))}
       </div>
