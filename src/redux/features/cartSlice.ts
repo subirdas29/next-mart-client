@@ -61,14 +61,53 @@ const cartSlice = createSlice({
         },
         updateShippingAddress:(state,action) =>{
             state.shippingAddress = action.payload
+        },
+        clearCut:(state)=>{
+            state.products=[];
+            state.city="";
+            state.shippingAddress=""
         }
     }
 })
 
+
+//*Products
 export const orderedProductsSelector = (state:RootState)=>{
     return state.cart.products
 }
 
+//*Order
+export const orderedSelector = (state:RootState)=>{
+    return {
+        products:state.cart.products.map((product)=>({
+            product:product._id,
+            quantity:product.orderQuantity,
+            color:"White"
+        })),
+        shippingAddress: `${state.cart.shippingAddress} - ${state.cart.city}`,
+        paymentMethod:"Online"
+    }
+}
+
+export const shippingCostSelector = (state:RootState)=>{
+    if(state.cart.city
+        && state.cart.city ==="Dhaka"
+         && state.cart.products.length > 1){
+        return 60
+    }
+    else if(state.cart.city
+         && state.cart.city !=="Dhaka"
+         && state.cart.products.length > 1){
+        return 120
+    }
+    else{
+        return 0
+    }
+}
+
+
+
+//*Payment
 export const subTotalSelector = (state:RootState)=>{
     return state.cart.products.reduce((acc,product)=>{
         if(product.offerPrice){
@@ -80,11 +119,25 @@ export const subTotalSelector = (state:RootState)=>{
     },0)
 }
 
-export const orderedProductsSelector = (state:RootState)=>{
-    return state.cart.products
+//*grandTotal
+export const grandTotalSelector = (state: RootState) => {
+    const subTotal = subTotalSelector(state);
+    const shippingCost = shippingCostSelector(state);
+  
+    return subTotal + shippingCost;
+  };
+
+
+//*Address
+export const citySelector = (state:RootState)=>{
+    return state.cart.city
 }
 
+//*shippingAddress
+export const shippingAddressSelector = (state:RootState)=>{
+    return state.cart.shippingAddress
+}
 
-export const {addProduct,incrementOrderQuantity,decrementOrderQuantity,removeProduct} = cartSlice.actions
+export const {addProduct,incrementOrderQuantity,decrementOrderQuantity,removeProduct,updateCity,updateShippingAddress,clearCut} = cartSlice.actions
 
 export default cartSlice.reducer

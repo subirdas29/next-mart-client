@@ -9,29 +9,25 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cities } from "@/constant/citites";
+import { citySelector, shippingAddressSelector, updateCity, updateShippingAddress } from "@/redux/features/cartSlice";
 
-// import {
-//   citySelector,
-//   shippingAddressSelector,
-//   updateCity,
-//   updateShippingAddress,
-// } from "@/redux/features/cartSlice";
+
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Address() {
-//   const dispatch = useAppDispatch();
-//   const selectedCity = useAppSelector(citySelector);
-//   const shippingAddress = useAppSelector(shippingAddressSelector);
+  const dispatch = useAppDispatch();
+  const selectedCity = useAppSelector(citySelector);
+  const shippingAddress = useAppSelector(shippingAddressSelector);
 
-//   const handleCitySelect = (city: string) => {
-    // dispatch(updateCity(city));
-//   };
+  const handleCitySelect = (city: string) => {
+    dispatch(updateCity(city));
+  };
 
-//   const handleShippingAddress = (address: string) => {
-//     dispatch(updateShippingAddress(address));
-//     console.log(selectedCity);
-//     console.log(shippingAddress);
-//   };
+  const handleShippingAddress = (address: string) => {
+    dispatch(updateShippingAddress(address));
+    console.log(selectedCity);
+    console.log(shippingAddress);
+  };
 
   return (
     <div className="border-2 border-white bg-background brightness-105 rounded-md col-span-4  p-5 ">
