@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
-import Logo from "@/app/assets/svgs/Logo";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "sonner";
@@ -21,6 +21,7 @@ import { loginUser, reCaptchaTokenVerification} from "@/services/AuthService";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
 import {  useRouter, useSearchParams } from "next/navigation";
+import Logo from "@/assets/svgs/Logo";
 
 export default function LoginForm() {
   const form = useForm({
